@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:listaTareas.ViewModels"
+             x:Class="listaTareas.Views.MainPage">
+
+    <ContentPage.BindingContext>
+        <vm:MainPageViewModel/>
+    </ContentPage.BindingContext>
+
+    <VerticalStackLayout Padding="20" Spacing="10">
+        <Label Text="Lista de tareas"
+            FontSize="24"
+            HorizontalOptions="Center"/>
+
+        <Button Text="Añadir tarea"
+
+             Command="{Binding NavigateCommand}" />
+
+        <!-- Listado de tareas-->
+        <CollectionView ItemsSource="{Binding Items}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <StackLayout Orientation="Horizontal" Padding="10">
+                        <CheckBox IsChecked="{Binding IsCompletes}"/>
+                        <Label VerticalOptions="Center">
+
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="{Binding Title}"/>
+                                </FormattedString>
+                            </Label.FormattedText>
+
+                            <Label.Triggers>
+                                <DataTrigger TargetType="Label" 
+                                          Binding="{Binding IsCompleted}"
+                                          Value="True">
+
+                                    <Setter Property="TextDecorations"
+                                         Value="Strikethrough"/>
+                                </DataTrigger>
+                            </Label.Triggers>
+                        </Label>
+                        <Button x:Name="DeleteButton"
+                             Margin="10,0,0,0"
+                             Text="Borrar"
+                             BackgroundColor="Red"
+                             TextColor="White"
+                             Command="{Binding Source={RelativeSource AncestorType={x:Type vm:MainPageViewModel}}, Path=DeleteItemCommand}"
+                             CommandParameter="{Binding .}"
+                             IsVisible="True">
+    
+                        </Button>
+                    </StackLayout>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </VerticalStackLayout>
+
+</ContentPage>
